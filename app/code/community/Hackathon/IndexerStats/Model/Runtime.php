@@ -103,6 +103,9 @@ class Hackathon_IndexerStats_Model_Runtime extends Mage_Core_Model_Abstract
 
         $processDiff = $currentTime->getTimestamp() - $startTime->getTimestamp();
 
+        if($avgTime == 0)
+            return 0;
+        
         return $processDiff / $avgTime;
     }
 }
