@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 /**
  * This file is part of Hackathon_IndexerStats for Magento.
@@ -16,4 +16,43 @@
             <version>0.1.0</version>
         </Hackathon_IndexerStats>
     </modules>
+    <global>
+        <models>
+            <hackathon_indexerstats>
+                <class>Hackathon_IndexerStats_Model</class>
+            </hackathon_indexerstats>
+        </models>
+        <blocks>
+            <hackathon_indexerstats>
+                <class>Hackathon_IndexerStats_Block</class>
+            </hackathon_indexerstats>
+        </blocks>
+        <helpers>
+            <hackathon_indexerstats>
+                <class>Hackathon_IndexerStats_Helper</class>
+            </hackathon_indexerstats>
+        </helpers>
+    </global>
+    <adminhtml>
+        <events>
+            <adminhtml_block_html_before>
+                <observers>
+                    <hackathon_indexerstats>
+                        <class>hackathon_indexerstats/observer</class>
+                        <method>addIndexStatusColumn</method>
+                    </hackathon_indexerstats>
+                </observers>
+            </adminhtml_block_html_before>
+        </events>
+        <translate>
+            <modules>
+                <Hackathon_IndexerStats>
+                    <files>
+                        <default>Hackathon_IndexerStats.csv</default>
+                    </files>
+                </Hackathon_IndexerStats>
+            </modules>
+        </translate>
+    </adminhtml>
+    <frontend />
 </config>
