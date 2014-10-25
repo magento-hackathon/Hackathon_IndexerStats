@@ -1,3 +1,5 @@
 #Hackathon_IndexerStats
 app/etc/modules/Hackathon_IndexerStats.xml app/etc/modules/Hackathon_IndexerStats.xml
 app/code/community/Hackathon/IndexerStats app/code/community/Hackathon/IndexerStats
+app/design/adminhtml/base/default/layout/hackathon_indexerstats.xml app/design/adminhtml/base/default/layout/hackathon_indexerstats.xml
+skin/adminhtml/default/default/hackathon_indexerstats.css skin/adminhtml/default/default/hackathon_indexerstats.css

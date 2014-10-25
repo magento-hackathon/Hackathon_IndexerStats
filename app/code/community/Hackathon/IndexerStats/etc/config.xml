@@ -150,6 +150,13 @@
                 </Hackathon_IndexerStats>
             </modules>
         </translate>
+        <layout>
+            <updates>
+                <hackathon_indexerstats module="Hackathon_IndexerStats">
+                    <file>hackathon_indexerstats.xml</file>
+                </hackathon_indexerstats>
+            </updates>
+        </layout>
     </adminhtml>
     <frontend />
 </config>
