@@ -20,7 +20,16 @@
         <models>
             <hackathon_indexerstats>
                 <class>Hackathon_IndexerStats_Model</class>
+                <resourceModel>hackathon_indexerstats_resource</resourceModel>
             </hackathon_indexerstats>
+            <hackathon_indexerstats_resource>
+                <class>Hackathon_IndexerStats_Model_Resource</class>
+                <entities>
+                    <history>
+                        <table>index_process_history</table>
+                    </history>
+                </entities>
+            </hackathon_indexerstats_resource>
         </models>
         <blocks>
             <hackathon_indexerstats>
@@ -32,6 +41,17 @@
                 <class>Hackathon_IndexerStats_Helper</class>
             </hackathon_indexerstats>
         </helpers>
+        <resources>
+            <hackathon_indexerstats_setup>
+                <setup>
+                    <module>Hackathon_IndexerStats</module>
+                    <class>Mage_Core_Model_Resource_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </hackathon_indexerstats_setup>
+        </resources>
     </global>
     <adminhtml>
         <events>
