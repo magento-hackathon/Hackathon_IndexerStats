@@ -63,6 +63,83 @@
                     </hackathon_indexerstats>
                 </observers>
             </adminhtml_block_html_before>
+            <!--
+              There is an "index_process_change_status" event, but it does not get triggered
+              when the index process ends, instead the status is directly updated via resource model.
+              So unfortunately the observer has to be registered for every indexer process
+            -->
+            <after_reindex_process_catalog_product_attribute>
+                <observers>
+                    <hackathon_indexerstats>
+                        <class>hackathon_indexerstats/observer</class>
+                        <method>saveHistory</method>
+                    </hackathon_indexerstats>
+                </observers>
+            </after_reindex_process_catalog_product_attribute>
+            <after_reindex_process_catalog_product_price>
+                <observers>
+                    <hackathon_indexerstats>
+                        <class>hackathon_indexerstats/observer</class>
+                        <method>saveHistory</method>
+                    </hackathon_indexerstats>
+                </observers>
+            </after_reindex_process_catalog_product_price>
+            <after_reindex_process_catalog_url>
+                <observers>
+                    <hackathon_indexerstats>
+                        <class>hackathon_indexerstats/observer</class>
+                        <method>saveHistory</method>
+                    </hackathon_indexerstats>
+                </observers>
+            </after_reindex_process_catalog_url>
+            <after_reindex_process_catalog_product_flat>
+                <observers>
+                    <hackathon_indexerstats>
+                        <class>hackathon_indexerstats/observer</class>
+                        <method>saveHistory</method>
+                    </hackathon_indexerstats>
+                </observers>
+            </after_reindex_process_catalog_product_flat>
+            <after_reindex_process_catalog_category_flat>
+                <observers>
+                    <hackathon_indexerstats>
+                        <class>hackathon_indexerstats/observer</class>
+                        <method>saveHistory</method>
+                    </hackathon_indexerstats>
+                </observers>
+            </after_reindex_process_catalog_category_flat>
+            <after_reindex_process_catalog_category_product>
+                <observers>
+                    <hackathon_indexerstats>
+                        <class>hackathon_indexerstats/observer</class>
+                        <method>saveHistory</method>
+                    </hackathon_indexerstats>
+                </observers>
+            </after_reindex_process_catalog_category_product>
+            <after_reindex_process_catalogsearch_fulltext>
+                <observers>
+                    <hackathon_indexerstats>
+                        <class>hackathon_indexerstats/observer</class>
+                        <method>saveHistory</method>
+                    </hackathon_indexerstats>
+                </observers>
+            </after_reindex_process_catalogsearch_fulltext>
+            <after_reindex_process_cataloginventory_stock>
+                <observers>
+                    <hackathon_indexerstats>
+                        <class>hackathon_indexerstats/observer</class>
+                        <method>saveHistory</method>
+                    </hackathon_indexerstats>
+                </observers>
+            </after_reindex_process_cataloginventory_stock>
+            <after_reindex_process_tag_summary>
+                <observers>
+                    <hackathon_indexerstats>
+                        <class>hackathon_indexerstats/observer</class>
+                        <method>saveHistory</method>
+                    </hackathon_indexerstats>
+                </observers>
+            </after_reindex_process_tag_summary>
         </events>
         <translate>
             <modules>

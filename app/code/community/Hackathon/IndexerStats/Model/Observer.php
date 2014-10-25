@@ -16,12 +16,14 @@
 class Hackathon_IndexerStats_Model_Observer extends Mage_Core_Model_Abstract
 {
 
+    const AFTER_REINDEX_PROCESS_EVENT_PREFIX = 'after_reindex_process_';
+
 // Magento Hackathon Tag NEW_CONST
 
 // Magento Hackathon Tag NEW_VAR
 
     /**
-     * short_description_here
+     * @see event adminhtml_block_html_before
      * @return 
      */
     public function addIndexStatusColumn(Varien_Event_Observer $observer)
@@ -43,6 +45,30 @@ class Hackathon_IndexerStats_Model_Observer extends Mage_Core_Model_Abstract
         ));
     }
 
+    /**
+     * @see event after_reindex_process_*
+     * @param Varien_Event_Observer $observer
+     */
+    public function saveHistory(Varien_Event_Observer $observer)
+    {
+        $indexerCode = substr($observer->getEvent()->getName(), strlen(self::AFTER_REINDEX_PROCESS_EVENT_PREFIX));
+        /** @var Mage_Index_Model_Process $process */
+        $process = Mage::getModel('index/process')->load($indexerCode, 'indexer_code');
+        if ($process->getStatus() === Mage_Index_Model_Process::STATUS_PENDING) {
+            $startTime = new DateTime($process->getStartedAt());
+            $endTime = new DateTime($process->getEndedAt());
+            $runningTime = $endTime->getTimestamp() - $startTime->getTimestamp();
+            /** @var Hackathon_IndexerStats_Model_History $processHistory */
+            $processHistory = Mage::getModel('hackathon_indexerstats/history');
+            $processHistory->setData(array(
+                'process_id'   => $process->getId(),
+                'started_at'   => $process->getStartedAt(),
+                'ended_at'     => $process->getEndedAt(),
+                'running_time' => $runningTime
+            ));
+            $processHistory->save();
+        }
+    }
 // Magento Hackathon Tag NEW_METHOD
 
 }
