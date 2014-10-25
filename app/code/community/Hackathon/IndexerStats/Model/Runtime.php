@@ -68,18 +68,14 @@ class Hackathon_IndexerStats_Model_Runtime extends Mage_Core_Model_Abstract
      */
     public function getAvgRuntime($indexer)
     {
-        $startTime = $indexer->getStartedAt();
-        $endTime = $indexer->getEndedAt();
-        if ($startTime > $endTime) {
-            return 'index not finished';
-        }
-        $lastRuntime = $this->_getDifferenceAsString($startTime, $endTime);
+        $avgTime = Mage::getModel('hackathon_indexerstats_resource/history')
+            ->getAvg($indexer->getId());
 
-        // hack for display avg
-        $idd = $indexer->getId();
-        $h = Mage::getModel('hackathon_indexerstats_resource/history');
+        $startTime = date("Y-m-d H:i:s");
+        $endTime = $time = date("m/d/Y h:i:s a", time() + $avgTime);
 
-        return $h->getAvg($idd);
+        $avgRuntime = $this->_getDifferenceAsString($startTime, $endTime);
+        return $avgRuntime;
     }
 
     public function getRemainingTime($indexer)
