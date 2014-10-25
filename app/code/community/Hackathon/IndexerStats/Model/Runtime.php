@@ -66,7 +66,7 @@ class Hackathon_IndexerStats_Model_Runtime extends Mage_Core_Model_Abstract
      * @param $indexer
      * @return mixed
      */
-    public function getRuntime($indexer)
+    public function getAvgRuntime($indexer)
     {
         $startTime = $indexer->getStartedAt();
         $endTime = $indexer->getEndedAt();
@@ -82,12 +82,13 @@ class Hackathon_IndexerStats_Model_Runtime extends Mage_Core_Model_Abstract
         return $h->getAvg($idd);
     }
 
-    public function getRemainingTime(){
-
+    public function getRemainingTime($indexer)
+    {
         return 1;
     }
 
-    public function getProgress(){
+    public function getProgress($indexer)
+    {
         return 1;
     }
 }
