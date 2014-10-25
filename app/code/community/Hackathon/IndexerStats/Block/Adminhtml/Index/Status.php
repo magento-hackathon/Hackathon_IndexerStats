@@ -22,7 +22,8 @@ class Hackathon_IndexerStats_Block_Adminhtml_Index_Status extends Mage_Adminhtml
 
     public function render(Varien_Object $row)
     {
-        return '99 %';
+        return Mage::getModel('hackathon_indexerstats/runtime')
+            ->getRuntime($row);
     }
 
 
