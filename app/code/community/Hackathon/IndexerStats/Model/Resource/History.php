@@ -43,7 +43,7 @@ class Hackathon_IndexerStats_Model_Resource_History extends Mage_Core_Model_Reso
         $avgTime = $adapter->fetchOne($select, $bind);
 
         if (!empty($avgTime)) {
-            return $avgTime;
+            return (int)$avgTime;
         } else {
             return 0;
         }

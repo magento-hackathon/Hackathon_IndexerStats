@@ -33,11 +33,8 @@ class Hackathon_IndexerStats_Model_Runtime extends Mage_Core_Model_Abstract
      *
      * @return string
      */
-    protected function _getDifferenceAsString($time1, $time2)
+    protected function _getDifferenceAsString(DateTime $datetime1, DateTime $datetime2)
     {
-        $datetime1 =  date_create($time1);
-        $datetime2 = date_create($time2);
-
         if ($datetime1 == $datetime2) {
             return '0s';
         }
@@ -63,32 +60,49 @@ class Hackathon_IndexerStats_Model_Runtime extends Mage_Core_Model_Abstract
     /**
      * Returns a readable runtime
      *
-     * @param $indexer
+     * @param $process
      * @return mixed
      */
-    public function getAvgRuntime($indexer)
+    public function getAvgRuntime($process)
     {
-        $startTime = $indexer->getStartedAt();
-        $endTime = $indexer->getEndedAt();
-        if ($startTime > $endTime) {
-            return 'index not finished';
-        }
-        $lastRuntime = $this->_getDifferenceAsString($startTime, $endTime);
+        $avgTime = Mage::getModel('hackathon_indexerstats_resource/history')
+            ->getAvg($process->getId());
 
-        // hack for display avg
-        $idd = $indexer->getId();
-        $h = Mage::getModel('hackathon_indexerstats_resource/history');
+        $currentTime = new DateTime();
+        $estimatedEndTime = new DateTime();
+        $estimatedEndTime->add(new DateInterval('PT'.$avgTime.'S'));
 
-        return $h->getAvg($idd);
+        $avgRuntime = $this->_getDifferenceAsString($currentTime, $estimatedEndTime);
+        return $avgRuntime;
     }
 
-    public function getRemainingTime($indexer)
+    public function getRemainingTime($process)
     {
-        return 1;
+        $avgTime = Mage::getModel('hackathon_indexerstats_resource/history')
+            ->getAvg($process->getId());
+
+        $currentTime = new DateTime();
+        $startTime = new DateTime($process->getStartedAt());
+        $estimatedEndTime = new DateTime($process->getStartedAt());
+        $estimatedEndTime->add(new DateInterval('PT'.$avgTime.'S'));
+
+        $this->_getDifferenceAsString($estimatedEndTime, $currentTime);
+
+        return $this->_getDifferenceAsString($estimatedEndTime, $currentTime);
     }
 
-    public function getProgress($indexer)
+    public function getProgress($process)
     {
-        return 1;
+        $avgTime = Mage::getModel('hackathon_indexerstats_resource/history')
+            ->getAvg($process->getId());
+
+        $currentTime = new DateTime();
+        $startTime = new DateTime($process->getStartedAt());
+        $estimatedEndTime = new DateTime($process->getStartedAt());
+        $estimatedEndTime->add(new DateInterval('PT'.$avgTime.'S'));
+
+        $processDiff = $currentTime->getTimestamp() - $startTime->getTimestamp();
+
+        return $processDiff / $avgTime;
     }
 }
