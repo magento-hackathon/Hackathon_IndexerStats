@@ -82,4 +82,12 @@ class Hackathon_IndexerStats_Model_Runtime extends Mage_Core_Model_Abstract
         return $h->getAvg($idd);
     }
 
+    public function getRemainingTime(){
+
+        return 1;
+    }
+
+    public function getProgress(){
+        return 1;
+    }
 }
