@@ -29,6 +29,27 @@ class Hackathon_IndexerStats_Model_Resource_History extends Mage_Core_Model_Reso
         $this->_init('hackathon_indexerstats/history', 'history_id');
     }
 
+    public function getAvg($processId)
+    {
+        $adapter = $this->_getReadAdapter();
+        $select = $adapter->select();
+        $select->from(array("history" => $this->getTable('hackathon_indexerstats/history')), array('avg_running_time' => 'AVG(running_time)'))
+            ->where('process_id = :process_id');
+
+        $bind = array(
+            'process_id' => $processId,
+        );
+
+        $avgTime = $adapter->fetchOne($select, $bind);
+
+        if (!empty($avgTime)) {
+            return $avgTime;
+        } else {
+            return 0;
+        }
+
+    }
+
 // Magento Hackathon Tag NEW_METHOD
 
 }

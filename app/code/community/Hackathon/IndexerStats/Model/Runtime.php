@@ -74,7 +74,12 @@ class Hackathon_IndexerStats_Model_Runtime extends Mage_Core_Model_Abstract
             return 'index not finished';
         }
         $lastRuntime = $this->_getDifferenceAsString($startTime, $endTime);
-        return $lastRuntime;
+
+        // hack for display avg
+        $idd = $indexer->getId();
+        $h = Mage::getModel('hackathon_indexerstats_resource/history');
+
+        return $h->getAvg($idd);
     }
 
 }
