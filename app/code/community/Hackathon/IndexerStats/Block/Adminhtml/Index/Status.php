@@ -44,7 +44,8 @@ class Hackathon_IndexerStats_Block_Adminhtml_Index_Status extends Mage_Adminhtml
 
     protected function _renderAvgRuntime(Mage_Index_Model_Process $process)
     {
-        return $this->_runtimeModel->getAvgRuntime($process);
+        return Mage::helper('hackathon_indexerstats')->__('Average:') .
+            $this->_runtimeModel->getAvgRuntime($process);
     }
 
     protected function _renderProgress(Mage_Index_Model_Process $process)
@@ -52,13 +53,15 @@ class Hackathon_IndexerStats_Block_Adminhtml_Index_Status extends Mage_Adminhtml
         $progress = min(100, $this->_runtimeModel->getProgress($process) * 100);
         if ($this->_runtimeModel->getProgress($process) > 1) {
             $inTimeClass = 'hackathon_indexerstats_not_in_time';
+            $timeCaption = Mage::helper('hackathon_indexerstats')->__('over time');
         } else {
             $inTimeClass = 'hackathon_indexerstats_in_time';
+            $timeCaption = Mage::helper('hackathon_indexerstats')->__('remaining');
         }
-        $remainingTime = $this->_runtimeModel->getRemainingTime($process);
+        $time = $this->_runtimeModel->getRemainingTime($process);
 
         return <<<HTML
-<div class="hackathon_indexerstats_progress {$inTimeClass}"><span style="width: {$progress}%;"><span></span></span><div>{$remainingTime}</div></div>
+<div class="hackathon_indexerstats_progress {$inTimeClass}"><span style="width: {$progress}%;"><span></span></span><div>{$time} {$timeCaption}</div></div>
 HTML;
 
     }
