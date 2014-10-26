@@ -50,6 +50,7 @@ class Hackathon_IndexerStats_Block_Adminhtml_Index_Status extends Mage_Adminhtml
 
     protected function _renderProgress(Mage_Index_Model_Process $process)
     {
+        $progressBarId = 'hackathon_indexerstats_progress_' . $process->getIndexerCode();
         $progress = min(100, $this->_runtimeModel->getProgress($process) * 100);
         if ($this->_runtimeModel->getProgress($process) > 1) {
             $inTimeClass = 'hackathon_indexerstats_not_in_time';
@@ -58,10 +59,15 @@ class Hackathon_IndexerStats_Block_Adminhtml_Index_Status extends Mage_Adminhtml
             $inTimeClass = 'hackathon_indexerstats_in_time';
             $timeCaption = Mage::helper('hackathon_indexerstats')->__('remaining');
         }
-        $time = $this->_runtimeModel->getRemainingTime($process);
+        $startTimestamp = $this->_runtimeModel->getStartTime($process)->getTimestamp();
+        $estimatedEndTimestamp = $this->_runtimeModel->getEstimatedEndTime($process)->getTimestamp();
+        $timeDisplay = $this->_runtimeModel->getRemainingTime($process);
 
         return <<<HTML
-<div class="hackathon_indexerstats_progress {$inTimeClass}"><span style="width: {$progress}%;"><span></span></span><div>{$time} {$timeCaption}</div></div>
+<div id="{$progressBarId}" data-started="{$startTimestamp}" data-estimated_end="{$estimatedEndTimestamp}" class="hackathon_indexerstats_progress {$inTimeClass}">
+    <span style="width: {$progress}%;"><span></span></span>
+    <div>{$timeDisplay} {$timeCaption}</div>
+</div>
 HTML;
 
     }
