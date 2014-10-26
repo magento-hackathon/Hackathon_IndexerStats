@@ -98,8 +98,6 @@ class Hackathon_IndexerStats_Model_Runtime extends Mage_Core_Model_Abstract
         $currentTime = new DateTime();
         $estimatedEndTime = $this->getEstimatedEndTime($process);
 
-        $this->_getDifferenceAsString($estimatedEndTime, $currentTime);
-
         return $this->_getDifferenceAsString($estimatedEndTime, $currentTime);
     }
 

@@ -31,7 +31,12 @@ class Hackathon_IndexerStats_Block_Adminhtml_Index_Status extends Mage_Adminhtml
         parent::_construct();
     }
 
-
+    /**
+     * Column renderer method
+     *
+     * @param Varien_Object $row
+     * @return string
+     */
     public function render(Varien_Object $row)
     {
         /** @var Mage_Index_Model_Process $row */
@@ -42,12 +47,24 @@ class Hackathon_IndexerStats_Block_Adminhtml_Index_Status extends Mage_Adminhtml
         }
     }
 
+    /**
+     * Renders average runtime (for non-running process)
+     *
+     * @param Mage_Index_Model_Process $process
+     * @return string
+     */
     protected function _renderAvgRuntime(Mage_Index_Model_Process $process)
     {
-        return Mage::helper('hackathon_indexerstats')->__('Average:') .
+        return Mage::helper('hackathon_indexerstats')->__('Average runtime:') . ' ' .
             $this->_runtimeModel->getAvgRuntime($process);
     }
 
+    /**
+     * Renders progress bar with estimated time (for running process)
+     *
+     * @param Mage_Index_Model_Process $process
+     * @return string
+     */
     protected function _renderProgress(Mage_Index_Model_Process $process)
     {
         $progressBarId = 'hackathon_indexerstats_progress_' . $process->getIndexerCode();

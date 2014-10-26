@@ -4,3 +4,5 @@ app/code/community/Hackathon/IndexerStats app/code/community/Hackathon/IndexerSt
 app/design/adminhtml/base/default/layout/hackathon_indexerstats.xml app/design/adminhtml/base/default/layout/hackathon_indexerstats.xml
 skin/adminhtml/default/default/hackathon_indexerstats.css skin/adminhtml/default/default/hackathon_indexerstats.css
 js/hackathon_indexerstats js/hackathon_indexerstats
+app/locale/en_US/Hackathon_IndexerStats.csv app/locale/en_US/Hackathon_IndexerStats.csv
+app/locale/de_DE/Hackathon_IndexerStats.csv app/locale/de_DE/Hackathon_IndexerStats.csv
