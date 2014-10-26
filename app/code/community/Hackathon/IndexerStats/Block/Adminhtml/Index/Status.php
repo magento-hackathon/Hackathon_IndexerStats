@@ -52,7 +52,7 @@ class Hackathon_IndexerStats_Block_Adminhtml_Index_Status extends Mage_Adminhtml
     {
         $progressBarId = 'hackathon_indexerstats_progress_' . $process->getIndexerCode();
         $progress = min(100, $this->_runtimeModel->getProgress($process) * 100);
-        if ($this->_runtimeModel->getProgress($process) > 1) {
+        if ($this->_runtimeModel->getProgress($process) >= 1) {
             $inTimeClass = 'hackathon_indexerstats_not_in_time';
             $timeCaption = Mage::helper('hackathon_indexerstats')->__('over time');
         } else {
