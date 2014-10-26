@@ -37,6 +37,7 @@ $historyTable = $installer->getConnection()
         Varien_Db_Ddl_Table::ACTION_CASCADE, Varien_Db_Ddl_Table::ACTION_CASCADE)
     ->setComment('Index Process History');
 
+$installer->getConnection()->dropTable($historyTable->getName());
 $installer->getConnection()->createTable($historyTable);
 
 $installer->endSetup();

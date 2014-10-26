@@ -55,18 +55,9 @@ class Hackathon_IndexerStats_Model_Observer extends Mage_Core_Model_Abstract
         /** @var Mage_Index_Model_Process $process */
         $process = Mage::getModel('index/process')->load($indexerCode, 'indexer_code');
         if ($process->getStatus() === Mage_Index_Model_Process::STATUS_PENDING) {
-            $startTime = new DateTime($process->getStartedAt());
-            $endTime = new DateTime($process->getEndedAt());
-            $runningTime = $endTime->getTimestamp() - $startTime->getTimestamp();
             /** @var Hackathon_IndexerStats_Model_History $processHistory */
             $processHistory = Mage::getModel('hackathon_indexerstats/history');
-            $processHistory->setData(array(
-                'process_id'   => $process->getId(),
-                'started_at'   => $process->getStartedAt(),
-                'ended_at'     => $process->getEndedAt(),
-                'running_time' => $runningTime
-            ));
-            $processHistory->save();
+            $processHistory->setDataFromProcess($process)->save();
         }
     }
 // Magento Hackathon Tag NEW_METHOD

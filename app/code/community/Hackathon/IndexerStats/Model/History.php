@@ -43,6 +43,25 @@ class Hackathon_IndexerStats_Model_History extends Mage_Core_Model_Abstract
         $this->_init('hackathon_indexerstats/history');
     }
 
+    /**
+     * Set start time and end time based on current process data
+     *
+     * @param Mage_Index_Model_Process $process
+     * @return $this
+     */
+    public function setDataFromProcess(Mage_Index_Model_Process $process)
+    {
+        $startTime = new DateTime($process->getStartedAt());
+        $endTime = new DateTime($process->getEndedAt());
+        $runningTime = $endTime->getTimestamp() - $startTime->getTimestamp();
+        $this->setData(array(
+            'process_id'   => $process->getId(),
+            'started_at'   => $process->getStartedAt(),
+            'ended_at'     => $process->getEndedAt(),
+            'running_time' => $runningTime
+        ));
+        return $this;
+    }
 // Magento Hackathon Tag NEW_METHOD
 
 }
