@@ -161,5 +161,12 @@
             </jstranslate>
         </layout>
     </adminhtml>
-    <frontend />
+    <frontend/>
+    <default>
+        <hackathon_indexerstats>
+            <process>
+                <number_for_avg>5</number_for_avg>
+            </process>
+        </hackathon_indexerstats>
+    </default>
 </config>
