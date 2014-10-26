@@ -16,6 +16,9 @@
             <action method="addCss">
                 <name>hackathon_indexerstats.css</name>
             </action>
+            <action method="addJs">
+                <name>hackathon_indexerstats/index_progress.js</name>
+            </action>
         </reference>
     </adminhtml_process_list>
 </layout>

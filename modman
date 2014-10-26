@@ -3,3 +3,4 @@ app/etc/modules/Hackathon_IndexerStats.xml app/etc/modules/Hackathon_IndexerStat
 app/code/community/Hackathon/IndexerStats app/code/community/Hackathon/IndexerStats
 app/design/adminhtml/base/default/layout/hackathon_indexerstats.xml app/design/adminhtml/base/default/layout/hackathon_indexerstats.xml
 skin/adminhtml/default/default/hackathon_indexerstats.css skin/adminhtml/default/default/hackathon_indexerstats.css
+js/hackathon_indexerstats js/hackathon_indexerstats
