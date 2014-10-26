@@ -9,6 +9,8 @@ respective indexers. The remaining time of a running indexer is estimated based 
 Compatibility
 ----
 - Magento CE 1.9
+- Magento CE 1.8
+- Magento CE 1.7
 
 Installation
 ----
