@@ -19,7 +19,7 @@ IndexerStats.Progress.prototype = {
         if (percentDone == 100) {
             this.progressElement.removeClassName('hackathon_indexerstats_in_time');
             this.progressElement.addClassName('hackathon_indexerstats_not_in_time');
-            this.timeCaptionElement.update('over time');
+            this.timeCaptionElement.update(Translator.translate('over time'));
         }
         var remainingTime = Math.abs(this.estimatedEndTime - this.getCurrentTime());
         var remainingTimeDisplay = '';

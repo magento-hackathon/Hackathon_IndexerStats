@@ -156,6 +156,9 @@
                     <file>hackathon_indexerstats.xml</file>
                 </hackathon_indexerstats>
             </updates>
+            <jstranslate>
+                <file>jstranslator.xml</file>
+            </jstranslate>
         </layout>
     </adminhtml>
     <frontend />
