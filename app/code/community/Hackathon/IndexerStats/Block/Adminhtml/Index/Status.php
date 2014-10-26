@@ -67,7 +67,7 @@ class Hackathon_IndexerStats_Block_Adminhtml_Index_Status extends Mage_Adminhtml
         return <<<HTML
 <div id="{$progressBarId}" data-now="{$now}" data-started="{$startTimestamp}" data-estimated_end="{$estimatedEndTimestamp}" class="hackathon_indexerstats_progress {$inTimeClass}">
     <span style="width: {$progress}%;"><span></span></span>
-    <div>{$timeDisplay} {$timeCaption}</div>
+    <div><span class="hackathon_indexerstats_time_display">{$timeDisplay}</span> <span class="hackathon_indexerstats_time_caption">{$timeCaption}</span></div>
 </div>
 HTML;
 
