@@ -38,7 +38,7 @@ class Hackathon_IndexerStats_Model_Observer extends Mage_Core_Model_Abstract
     {
         $grid->addColumn('status_extended', array(
             'header'    => Mage::helper('hackathon_indexerstats')->__('Status (extended)'),
-            'width'     => '120',
+            'width'     => '200',
             'align'     => 'left',
             'index'     => 'status_extended',
             'renderer'  => 'hackathon_indexerstats/adminhtml_index_status',

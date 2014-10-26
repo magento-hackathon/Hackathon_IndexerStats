@@ -25,33 +25,33 @@
     -moz-border-radius-bottomleft: 20px;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
-    background-color: rgb(43,194,83);
+    background-color: rgb(60,184,97);
     background-image: -webkit-gradient(
             linear,
             left bottom,
             left top,
-            color-stop(0, rgb(43,194,83)),
-            color-stop(1, rgb(84,240,84))
+            color-stop(0, rgb(60,184,97)),
+            color-stop(1, rgb(79,198,115))
     );
     background-image: -webkit-linear-gradient(
             center bottom,
-            rgb(43,194,83) 37%,
-            rgb(84,240,84) 69%
+            rgb(60,184,97) 37%,
+            rgb(79,198,115) 69%
     );
     background-image: -moz-linear-gradient(
             center bottom,
-            rgb(43,194,83) 37%,
-            rgb(84,240,84) 69%
+            rgb(60,184,97) 37%,
+            rgb(79,198,115) 69%
     );
     background-image: -ms-linear-gradient(
             center bottom,
-            rgb(43,194,83) 37%,
-            rgb(84,240,84) 69%
+            rgb(60,184,97) 37%,
+            rgb(79,198,115) 69%
     );
     background-image: -o-linear-gradient(
             center bottom,
-            rgb(43,194,83) 37%,
-            rgb(84,240,84) 69%
+            rgb(60,184,97) 37%,
+            rgb(79,198,115) 69%
     );
     -webkit-box-shadow:
     inset 0 2px 9px  rgba(255,255,255,0.3),
@@ -63,12 +63,12 @@
     overflow: hidden;
 }
 .hackathon_indexerstats_not_in_time > span {
-    background-color: #f0a3a3;
-    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #f0a3a3),color-stop(1, #f42323));
-    background-image: -webkit-linear-gradient(top, #f0a3a3, #f42323);
-    background-image: -moz-linear-gradient(top, #f0a3a3, #f42323);
-    background-image: -ms-linear-gradient(top, #f0a3a3, #f42323);
-    background-image: -o-linear-gradient(top, #f0a3a3, #f42323);
+    background-color: rgb(245,86,0);
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, rgb(245,86,0)),color-stop(1, rgb(228,17,1)));
+    background-image: -webkit-linear-gradient(top, rgb(245,86,0), rgb(228,17,1));
+    background-image: -moz-linear-gradient(top, rgb(245,86,0), rgb(228,17,1));
+    background-image: -ms-linear-gradient(top, rgb(245,86,0), rgb(228,17,1));
+    background-image: -o-linear-gradient(top, rgb(245,86,0), rgb(228,17,1));
 }
 .hackathon_indexerstats_not_in_time span {
     -webkit-border-top-right-radius: 20px;
