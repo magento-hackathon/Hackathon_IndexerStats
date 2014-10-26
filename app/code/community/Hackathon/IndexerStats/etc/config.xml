@@ -17,52 +17,7 @@
         </Hackathon_IndexerStats>
     </modules>
     <global>
-        <models>
-            <hackathon_indexerstats>
-                <class>Hackathon_IndexerStats_Model</class>
-                <resourceModel>hackathon_indexerstats_resource</resourceModel>
-            </hackathon_indexerstats>
-            <hackathon_indexerstats_resource>
-                <class>Hackathon_IndexerStats_Model_Resource</class>
-                <entities>
-                    <history>
-                        <table>index_process_history</table>
-                    </history>
-                </entities>
-            </hackathon_indexerstats_resource>
-        </models>
-        <blocks>
-            <hackathon_indexerstats>
-                <class>Hackathon_IndexerStats_Block</class>
-            </hackathon_indexerstats>
-        </blocks>
-        <helpers>
-            <hackathon_indexerstats>
-                <class>Hackathon_IndexerStats_Helper</class>
-            </hackathon_indexerstats>
-        </helpers>
-        <resources>
-            <hackathon_indexerstats_setup>
-                <setup>
-                    <module>Hackathon_IndexerStats</module>
-                    <class>Mage_Core_Model_Resource_Setup</class>
-                </setup>
-                <connection>
-                    <use>core_setup</use>
-                </connection>
-            </hackathon_indexerstats_setup>
-        </resources>
-    </global>
-    <adminhtml>
         <events>
-            <adminhtml_block_html_before>
-                <observers>
-                    <hackathon_indexerstats>
-                        <class>hackathon_indexerstats/observer</class>
-                        <method>addIndexStatusColumn</method>
-                    </hackathon_indexerstats>
-                </observers>
-            </adminhtml_block_html_before>
             <!--
               There is an "index_process_change_status" event, but it does not get triggered
               when the index process ends, instead the status is directly updated via resource model.
@@ -140,6 +95,53 @@
                     </hackathon_indexerstats>
                 </observers>
             </after_reindex_process_tag_summary>
+        </events>
+        <models>
+            <hackathon_indexerstats>
+                <class>Hackathon_IndexerStats_Model</class>
+                <resourceModel>hackathon_indexerstats_resource</resourceModel>
+            </hackathon_indexerstats>
+            <hackathon_indexerstats_resource>
+                <class>Hackathon_IndexerStats_Model_Resource</class>
+                <entities>
+                    <history>
+                        <table>index_process_history</table>
+                    </history>
+                </entities>
+            </hackathon_indexerstats_resource>
+        </models>
+        <blocks>
+            <hackathon_indexerstats>
+                <class>Hackathon_IndexerStats_Block</class>
+            </hackathon_indexerstats>
+        </blocks>
+        <helpers>
+            <hackathon_indexerstats>
+                <class>Hackathon_IndexerStats_Helper</class>
+            </hackathon_indexerstats>
+        </helpers>
+        <resources>
+            <hackathon_indexerstats_setup>
+                <setup>
+                    <module>Hackathon_IndexerStats</module>
+                    <class>Mage_Core_Model_Resource_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </hackathon_indexerstats_setup>
+        </resources>
+    </global>
+    <adminhtml>
+        <events>
+            <adminhtml_block_html_before>
+                <observers>
+                    <hackathon_indexerstats>
+                        <class>hackathon_indexerstats/observer</class>
+                        <method>addIndexStatusColumn</method>
+                    </hackathon_indexerstats>
+                </observers>
+            </adminhtml_block_html_before>
         </events>
         <translate>
             <modules>
