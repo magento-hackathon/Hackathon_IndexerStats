@@ -1,4 +1,35 @@
 IndexerStats = window.IndexerStats || {};
+
+IndexerStats.AjaxRequest = Class.create();
+IndexerStats.AjaxRequest.prototype = {
+    initialize : function(url) {
+        if (!url) {
+            return;
+        }
+        new Ajax.Request(url, {
+            onFailure: this.onFailure.bind(this),
+            onSuccess: this.onSuccess.bind(this)
+        }); 
+    },
+    onSuccess : function(transport) {
+        this.showMessage(transport.responseJSON.error ? 'error' : 'success', transport.responseJSON.message);
+    },
+    onFailure : function(transport) {
+    	this.showMessage('error', 'Reindex request failed.');
+    },
+    onMassComplete : function(grid, massaction, transport) {
+    	if (200 == transport.status) {
+    		this.onSuccess(transport);
+    	} else {
+    		this.onFailure(transport);
+    	}
+    },
+    showMessage : function(type, message)
+    {
+    	$('messages').insert('<ul class="messages"><li class="' + type + '-msg"><ul><li><span>' + message + '</span></li></ul></li></ul>');
+    }
+};
+
 IndexerStats.Progress = Class.create();
 IndexerStats.Progress.prototype = {
     initialize : function(progressElement) {

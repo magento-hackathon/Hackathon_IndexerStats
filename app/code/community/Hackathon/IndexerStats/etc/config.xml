@@ -163,7 +163,7 @@
             </jstranslate>
         </layout>
     </adminhtml>
-    <frontend/>
+    <frontend />
     <default>
         <hackathon_indexerstats>
             <process>
@@ -171,4 +171,15 @@
             </process>
         </hackathon_indexerstats>
     </default>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <hackathon_indexerstats after="Mage_Adminhtml">Hackathon_IndexerStats_Adminhtml</hackathon_indexerstats>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
 </config>

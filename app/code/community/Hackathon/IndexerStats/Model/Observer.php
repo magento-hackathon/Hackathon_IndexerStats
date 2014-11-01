@@ -32,6 +32,7 @@ class Hackathon_IndexerStats_Model_Observer extends Mage_Core_Model_Abstract
         $block = $observer->getBlock();
         if ($block instanceof Mage_Index_Block_Adminhtml_Process_Grid) {
             $this->_addIndexStatusColumnTo($block);
+            $this->_changeActionColumnToAjax($block);
         }
     }
     protected function _addIndexStatusColumnTo(Mage_Index_Block_Adminhtml_Process_Grid $grid)
@@ -43,6 +44,28 @@ class Hackathon_IndexerStats_Model_Observer extends Mage_Core_Model_Abstract
             'index'     => 'status_extended',
             'renderer'  => 'hackathon_indexerstats/adminhtml_index_status',
         ));
+    }
+    protected function _changeActionColumnToAjax(Mage_Index_Block_Adminhtml_Process_Grid $grid)
+    {
+        $grid->getColumn('action')->setActions(
+            array(
+                array(
+                    'caption' => Mage::helper('index')->__('Reindex Data'),
+                    'url' => array('base' => '*/*/reindexProcessAjax'),
+                    'onclick' => "new IndexerStats.AjaxRequest(this.href); return false;",
+                    'field' => 'process'
+                )
+            ));
+        /*
+         * We use the IndexerStats.AjaxRequest class only for response here, normal Ajax.Request
+         * is hard coded in grid.js as only non-submitting action
+         * 
+         * eval'd "complete" value gets used as callback in JavaScript.
+         */
+        $grid->getMassactionBlock()->setUseAjax(true)
+            ->getItem('reindex')
+            ->setUrl($grid->getUrl('*/*/massReindexAjax'))
+            ->setComplete('(rq = new IndexerStats.AjaxRequest()).onMassComplete.bind(rq)');
     }
 
     /**
