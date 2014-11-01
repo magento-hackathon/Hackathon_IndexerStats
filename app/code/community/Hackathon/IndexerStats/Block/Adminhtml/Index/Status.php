@@ -55,8 +55,12 @@ class Hackathon_IndexerStats_Block_Adminhtml_Index_Status extends Mage_Adminhtml
      */
     protected function _renderAvgRuntime(Mage_Index_Model_Process $process)
     {
-        return Mage::helper('hackathon_indexerstats')->__('Average runtime:') . ' ' .
-            $this->_runtimeModel->getAvgRuntime($process);
+        $progressBarId = 'hackathon_indexerstats_progress_' . $process->getIndexerCode();
+        //TODO add metadata to allow immediate client side start of progress bar
+        return '<div id="' . $progressBarId . '">' .
+            Mage::helper('hackathon_indexerstats')->__('Average runtime:') . ' ' .
+            $this->_runtimeModel->getAvgRuntime($process) .
+            '</div>';
     }
 
     /**

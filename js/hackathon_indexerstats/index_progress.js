@@ -13,9 +13,11 @@ IndexerStats.AjaxRequest.prototype = {
     },
     onSuccess : function(transport) {
         this.showMessage(transport.responseJSON.error ? 'error' : 'success', transport.responseJSON.message);
+        IndexerStats.status.update();
     },
     onFailure : function(transport) {
     	this.showMessage('error', 'Reindex request failed.');
+        IndexerStats.status.update();
     },
     onMassComplete : function(grid, massaction, transport) {
     	if (200 == transport.status) {
@@ -30,6 +32,39 @@ IndexerStats.AjaxRequest.prototype = {
     }
 };
 
+IndexerStats.Status = Class.create();
+IndexerStats.Status.prototype = {
+    initialize : function() {
+    	this.isUpdating = false;
+        setInterval(this.update.bind(this), 30000); //TODO change interval dynamically based on estimated time of currently running indexer
+    },
+    update : function() {
+    	if (this.isUpdating) return;
+    	this.isUpdating = true;
+        new Ajax.Request('/admin/process/statusAjax', {
+        	loaderArea : false,
+            onSuccess : this.onSuccess.bind(this)
+        });
+        IndexerStats.status.update();
+    },
+    onSuccess : function(transport) {
+        this.isUpdating = false;
+        for (var i = 0, c = transport.responseJSON.process.length; i < c; ++i) {
+        	var statusColumn = $('hackathon_indexerstats_progress_' + transport.responseJSON.process[i].code);
+        	if (statusColumn) {
+        		//TODO update status, update_required and updated_at as well (with "finished" notice?)
+        		statusColumn.replace(transport.responseJSON.process[i].html);
+        	}
+        };
+
+        // copy + paste von unten
+            $$('.hackathon_indexerstats_progress').each(function (progressbar) {
+                progressbar.progress = new IndexerStats.Progress(progressbar);
+            });
+            
+    }
+};
+
 IndexerStats.Progress = Class.create();
 IndexerStats.Progress.prototype = {
     initialize : function(progressElement) {
@@ -41,6 +76,7 @@ IndexerStats.Progress.prototype = {
         this.startTime = progressElement.dataset.started;
         this.estimatedEndTime = progressElement.dataset.estimated_end;
         setInterval(this.updateProgressbar.bind(this), 1000);
+        this.shouldBeDone = false;
     },
     getCurrentTime : function() {
         return Date.now() / 1000 + this.timeOffset;
@@ -51,6 +87,10 @@ IndexerStats.Progress.prototype = {
             this.progressElement.removeClassName('hackathon_indexerstats_in_time');
             this.progressElement.addClassName('hackathon_indexerstats_not_in_time');
             this.timeCaptionElement.update(Translator.translate('over time'));
+            if (!this.shouldBeDone) {
+                this.shouldBeDone = true;
+                IndexerStats.status.update();
+            }
         }
         var remainingTime = Math.abs(this.estimatedEndTime - this.getCurrentTime());
         var remainingTimeDisplay = '';
@@ -71,6 +111,7 @@ IndexerStats.Progress.prototype = {
 
 document.observe("dom:loaded", function() {
     $$('.hackathon_indexerstats_progress').each(function (progressbar) {
-        new IndexerStats.Progress(progressbar);
+        progressbar.progress = new IndexerStats.Progress(progressbar);
     });
+    IndexerStats.status = new IndexerStats.Status();
 });

@@ -18,16 +18,37 @@ class Hackathon_IndexerStats_Adminhtml_ProcessController extends Mage_Index_Admi
 
 // Magento Hackathon Tag NEW_CONST
 
-	protected $_jsonResponse;
+	protected $_jsonResponse = array();
 
 // Magento Hackathon Tag NEW_VAR
 
+	/**
+	 * AJAX action to update status column
+	 * 
+	 * @return
+	 */
+    public function statusAjaxAction()
+    {        
+        /* @var $indexer Mage_Index_Model_Indexer */
+        $indexer    = Mage::getSingleton('index/indexer');
+        /* @var $statusRenderer Hackathon_IndexerStats_Block_Adminhtml_Index_Status */
+        $statusRenderer = $this->getLayout()->createBlock(
+            'hackathon_indexerstats/adminhtml_index_status');
+        foreach ($indexer->getProcessesCollection() as $process) {
+            /* @var $process Mage_Index_Model_Process */
+            $this->_jsonResponse['process'][] = array(
+                'code' => $process->getIndexerCode(),
+                'html' => $statusRenderer->render($process));
+        }
+        $this->_sendJsonResponse();
+    }
     /**
      * short_description_here
      * @return 
      */
     public function reindexProcessAjaxAction()
     {
+        //TODO non-blocking requests for file based sessions (session_write_close() here does not seem to be enough)
         /** @var $process Mage_Index_Model_Process */
         $process = $this->_initProcess();
         if ($process) {
