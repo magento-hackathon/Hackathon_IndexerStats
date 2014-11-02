@@ -20,4 +20,7 @@
     <hackathon-indexerstats-finished-in translate="message" module="hackathon_indexerstats">
         <message>Finished in</message>
     </hackathon-indexerstats-finished-in>
+    <hackathon-indexerstats-initializing translate="message" module="hackathon_indexerstats">
+        <message>Initializing...</message>
+    </hackathon-indexerstats-initializing>
 </jstranslator>

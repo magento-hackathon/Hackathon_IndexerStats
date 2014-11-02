@@ -119,14 +119,12 @@ IndexerStats.Progress.prototype = {
             this.timeOffset = progressElement.dataset.now - (Date.now() / 1000);
             this.startTime = progressElement.dataset.started;
             this.estimatedEndTime = progressElement.dataset.estimated_end;
+            setInterval(this.updateProgressbar.bind(this), 1000);
         } else {
-            this.timeOffset = 0;
-            this.startTime = Date.now() / 1000;
-            this.estimatedEndTime = this.startTime + parseInt(progressElement.dataset.avg_runtime);
-            this.timeCaptionElement.update(Translator.translate('remaining'));
-            this.updateProgressbar();
+        	this.progressBarElement.style.width = '100%';
+            this.timeCaptionElement.update(Translator.translate('Initializing...'));
+            this.progressElement.addClassName('hackathon_indexerstats_starting');
         }
-        setInterval(this.updateProgressbar.bind(this), 1000);
         this.shouldBeDone = false;
     },
     getCurrentTime : function() {

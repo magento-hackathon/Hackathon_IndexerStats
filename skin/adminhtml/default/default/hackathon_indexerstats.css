@@ -78,7 +78,31 @@
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
 }
+.hackathon_indexerstats_starting > span {
+    background-color: rgb(245,86,0);
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #555),color-stop(1, #999));
+    background-image: -webkit-linear-gradient(top, #555, #999);
+    background-image: -moz-linear-gradient(top, #555, #999);
+    background-image: -ms-linear-gradient(top, #555, #999);
+    background-image: -o-linear-gradient(top, #555, #999);
+}
+.hackathon_indexerstats_starting span {
+    -webkit-border-top-right-radius: 20px;
+    -webkit-border-bottom-right-radius: 20px;
+    -moz-border-radius-topright: 20px;
+    -moz-border-radius-bottomright: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
 @keyframes progress_move {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 50px 50px;
+    }
+}
+@-webkit-keyframes progress_move {
     0% {
         background-position: 0 0;
     }
