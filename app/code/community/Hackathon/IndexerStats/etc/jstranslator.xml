@@ -14,4 +14,7 @@
     <hackathon-indexerstats-over-time translate="message" module="hackathon_indexerstats">
         <message>over time</message>
     </hackathon-indexerstats-over-time>
+    <hackathon-indexerstats-remaining translate="message" module="hackathon_indexerstats">
+        <message>remaining</message>
+    </hackathon-indexerstats-remaining>
 </jstranslator>
