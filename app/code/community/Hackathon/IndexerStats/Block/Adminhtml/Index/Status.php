@@ -92,7 +92,7 @@ HTML;
         $timeDisplay = $this->_runtimeModel->getRemainingTime($process);
 
         return <<<HTML
-<div id="{$progressBarId}" data-now="{$now}" data-started="{$startTimestamp}" data-estimated_end="{$estimatedEndTimestamp}" class="hackathon_indexerstats_progress {$inTimeClass}">
+<div id="{$progressBarId}" data-now="{$now}" data-started="{$startTimestamp}" data-estimated_end="{$estimatedEndTimestamp}" class="hackathon_indexerstats_info hackathon_indexerstats_progress {$inTimeClass}">
     <span style="width: {$progress}%;"><span></span></span>
     <div><span class="hackathon_indexerstats_time_display">{$timeDisplay}</span> <span class="hackathon_indexerstats_time_caption">{$timeCaption}</span></div>
 </div>

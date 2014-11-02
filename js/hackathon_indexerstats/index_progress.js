@@ -8,7 +8,6 @@ IndexerStats.AjaxRequest.prototype = {
         }
         var progressbar = $(link.parentNode.parentNode).select('.hackathon_indexerstats_info')[0];
         progressbar.addClassName('hackathon_indexerstats_progress');
-        progressbar.removeClassName('hackathon_indexerstats_info');
         progressbar.progress = new IndexerStats.Progress(progressbar);
 
         new Ajax.Request(link.href, {
@@ -126,5 +125,18 @@ document.observe("dom:loaded", function() {
     $$('.hackathon_indexerstats_progress').each(function (progressbar) {
         progressbar.progress = new IndexerStats.Progress(progressbar);
     });
+    indexer_processes_grid_massactionJsObject.apply = indexer_processes_grid_massactionJsObject.apply.wrap(
+        function(parent) {
+            if (this.select.value == 'reindex') {
+            	var firstProcessId = this.checkedString.split(',', 1);
+            	var progressbar = $('indexer_processes_grid_table')
+            	    .select('input[name=process][value=' + firstProcessId + ']')[0]
+            	    .parentNode.parentNode
+            	    .select('.hackathon_indexerstats_info')[0];
+                progressbar.addClassName('hackathon_indexerstats_progress');
+                progressbar.progress = new IndexerStats.Progress(progressbar);
+        	}
+        	parent();
+        });
     IndexerStats.status = new IndexerStats.Status();
 });
