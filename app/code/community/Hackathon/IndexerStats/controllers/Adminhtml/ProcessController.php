@@ -8,7 +8,12 @@
  * @package Hackathon_IndexerStats
  * @copyright Copyright (c) 2014 Magento Hackathon (http://github.com/magento-hackathon)
  */
+
+/**
+ * require parent class
+ */
 require_once 'Mage/Index/controllers/Adminhtml/ProcessController.php';
+
 /**
  * Adminhtml_Process Controller
  * @package Hackathon_IndexerStats
@@ -43,12 +48,13 @@ class Hackathon_IndexerStats_Adminhtml_ProcessController extends Mage_Index_Admi
         $this->_sendJsonResponse();
     }
     /**
-     * short_description_here
+     * Reindex process action, modified for AJAX request
+     * 
      * @return 
      */
     public function reindexProcessAjaxAction()
     {
-        //TODO non-blocking requests for file based sessions (session_write_close() here does not seem to be enough)
+        $this->_closeSession();
         /** @var $process Mage_Index_Model_Process */
         $process = $this->_initProcess();
         if ($process) {
@@ -76,8 +82,14 @@ class Hackathon_IndexerStats_Adminhtml_ProcessController extends Mage_Index_Admi
         $this->_sendJsonResponse();
     }
     
+    /**
+     * Mass reindex action, modified for AJAX request
+     * 
+     * @return
+     */
     public function massReindexAjaxAction()
     {
+        $this->_closeSession();
         /* @var $indexer Mage_Index_Model_Indexer */
         $indexer    = Mage::getSingleton('index/indexer');
         $processIds = $this->getRequest()->getParam('process');
@@ -107,22 +119,54 @@ class Hackathon_IndexerStats_Adminhtml_ProcessController extends Mage_Index_Admi
         $this->_sendJsonResponse();
     }
 
+    /**
+     * Add error message to JSON response
+     * 
+     * @param string $message
+     * @return $this
+     */
     protected function _addError($message)
     {
     	$this->_jsonResponse['error'] = true;
     	$this->_jsonResponse['message'] = $message;
+    	return $this;
     }
+    /**
+     * Add success message to JSON response
+     * 
+     * @param string $message
+     * @return $this
+     */
     protected function _addSuccess($message)
     {
     	$this->_jsonResponse['error'] = false;
     	$this->_jsonResponse['message'] = $message;
+    	return $this;
     }
+    
+    /**
+     * Send prepared JSON response
+     * 
+     * @return $this
+     */
     protected function _sendJsonResponse()
     {
     	$this->getResponse()->setHeader('Content-type', 'application/json;charset=utf-8');
     	$this->getResponse()->setBody(
 			Mage::helper('core')->jsonEncode($this->_jsonResponse)
     	);
+    	return $this;
+    }
+    /**
+     * Close session to unlock session storage
+     * 
+     * @return $this
+     */
+    protected function _closeSession()
+    {
+        session_write_close();
+        unset($_SESSION);
+        return $this;
     }
 // Magento Hackathon Tag NEW_METHOD
 
