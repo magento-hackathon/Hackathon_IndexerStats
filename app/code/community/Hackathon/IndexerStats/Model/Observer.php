@@ -52,7 +52,7 @@ class Hackathon_IndexerStats_Model_Observer extends Mage_Core_Model_Abstract
                 array(
                     'caption' => Mage::helper('index')->__('Reindex Data'),
                     'url' => array('base' => '*/*/reindexProcessAjax'),
-                    'onclick' => "new IndexerStats.AjaxRequest(this.href); return false;",
+                    'onclick' => "new IndexerStats.AjaxRequest(this); return false;",
                     'field' => 'process'
                 )
             ));

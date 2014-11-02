@@ -170,3 +170,6 @@
     left: 0;
     width: 100%;
 }
+.hackathon_indexerstats_progress .hackathon_indexerstats_avgruntime {
+    display: none;
+}

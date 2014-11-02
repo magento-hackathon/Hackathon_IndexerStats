@@ -56,11 +56,17 @@ class Hackathon_IndexerStats_Block_Adminhtml_Index_Status extends Mage_Adminhtml
     protected function _renderAvgRuntime(Mage_Index_Model_Process $process)
     {
         $progressBarId = 'hackathon_indexerstats_progress_' . $process->getIndexerCode();
-        //TODO add metadata to allow immediate client side start of progress bar
-        return '<div id="' . $progressBarId . '">' .
-            Mage::helper('hackathon_indexerstats')->__('Average runtime:') . ' ' .
-            $this->_runtimeModel->getAvgRuntime($process) .
-            '</div>';
+        $avgRuntime = $this->_runtimeModel->getAvgRuntime($process);
+        $avgRuntimeDisplay = $this->_runtimeModel->getAvgRuntimeDisplay($process);
+        $avgRuntimeLabel = Mage::helper('hackathon_indexerstats')->__('Average runtime:');
+        //TODO deduplicate HTML
+        return <<<HTML
+<div id="{$progressBarId}" data-avg_runtime="{$avgRuntime}" class="hackathon_indexerstats_info">
+    <span style="width: 0%;"><span></span></span>
+    <div><span class="hackathon_indexerstats_time_display"></span> <span class="hackathon_indexerstats_time_caption"></span></div>
+    <span class="hackathon_indexerstats_avgruntime">{$avgRuntimeLabel} {$avgRuntimeDisplay}</span>
+</div>
+HTML;
     }
 
     /**

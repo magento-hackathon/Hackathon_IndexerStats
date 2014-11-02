@@ -18,6 +18,8 @@ class Hackathon_IndexerStats_Model_Runtime extends Mage_Core_Model_Abstract
 
 // Magento Hackathon Tag NEW_CONST
 
+    protected $_avgRuntimes = array();
+    
 // Magento Hackathon Tag NEW_VAR
 
 // Magento Hackathon Tag NEW_METHOD
@@ -57,17 +59,26 @@ class Hackathon_IndexerStats_Model_Runtime extends Mage_Core_Model_Abstract
         return trim($differenceString);
     }
 
+    public function getAvgRuntime(Mage_Index_Model_Process $process)
+    {
+        $indexerCode = $process->getIndexerCode();
+        if (!isset($this->_avgRuntimes[$indexerCode])) {
+            $this->_avgRuntimes[$indexerCode] = Mage::getModel('hackathon_indexerstats_resource/history')
+                ->getAvg($process->getId());
+        }
+        return $this->_avgRuntimes[$indexerCode];
+    }
+    
     /**
      * Returns a readable runtime
      *
      * @param $process
      * @return mixed
      */
-    public function getAvgRuntime(Mage_Index_Model_Process $process)
+    public function getAvgRuntimeDisplay(Mage_Index_Model_Process $process)
     {
-        $avgTime = Mage::getModel('hackathon_indexerstats_resource/history')
-            ->getAvg($process->getId());
-
+        $avgTime = $this->getAvgRuntime($process);
+        
         $currentTime = new DateTime();
         $estimatedEndTime = new DateTime();
         $estimatedEndTime->add(new DateInterval('PT'.$avgTime.'S'));
@@ -84,9 +95,7 @@ class Hackathon_IndexerStats_Model_Runtime extends Mage_Core_Model_Abstract
 
     public function getEstimatedEndTime($process)
     {
-        //TODO save in property
-        $avgTime = Mage::getModel('hackathon_indexerstats_resource/history')
-            ->getAvg($process->getId());
+        $avgTime = $this->getAvgRuntime($process);
 
         $estimatedEndTime = new DateTime($process->getStartedAt());
         $estimatedEndTime->add(new DateInterval('PT'.$avgTime.'S'));

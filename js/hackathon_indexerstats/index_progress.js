@@ -2,11 +2,16 @@ IndexerStats = window.IndexerStats || {};
 
 IndexerStats.AjaxRequest = Class.create();
 IndexerStats.AjaxRequest.prototype = {
-    initialize : function(url) {
-        if (!url) {
+    initialize : function(link) {
+        if (!link) {
             return;
         }
-        new Ajax.Request(url, {
+        var progressbar = $(link.parentNode.parentNode).select('.hackathon_indexerstats_info')[0];
+        progressbar.addClassName('hackathon_indexerstats_progress');
+        progressbar.removeClassName('hackathon_indexerstats_info');
+        progressbar.progress = new IndexerStats.Progress(progressbar);
+
+        new Ajax.Request(link.href, {
             onFailure: this.onFailure.bind(this),
             onSuccess: this.onSuccess.bind(this)
         }); 
@@ -72,9 +77,17 @@ IndexerStats.Progress.prototype = {
         this.progressBarElement = progressElement.select('span')[0];
         this.timeDisplayElement = progressElement.select('.hackathon_indexerstats_time_display')[0];
         this.timeCaptionElement = progressElement.select('.hackathon_indexerstats_time_caption')[0];
-        this.timeOffset = progressElement.dataset.now - (Date.now() / 1000);
-        this.startTime = progressElement.dataset.started;
-        this.estimatedEndTime = progressElement.dataset.estimated_end;
+        if (progressElement.dataset.started) {
+            this.timeOffset = progressElement.dataset.now - (Date.now() / 1000);
+            this.startTime = progressElement.dataset.started;
+            this.estimatedEndTime = progressElement.dataset.estimated_end;
+        } else {
+        	this.timeOffset = 0;
+        	this.startTime = Date.now() / 1000;
+        	this.estimatedEndTime = this.startTime + parseInt(progressElement.dataset.avg_runtime);
+            this.timeCaptionElement.update(Translator.translate('remaining'));
+        	this.updateProgressbar();
+        }
         setInterval(this.updateProgressbar.bind(this), 1000);
         this.shouldBeDone = false;
     },
