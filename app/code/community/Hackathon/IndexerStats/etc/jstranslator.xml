@@ -17,4 +17,7 @@
     <hackathon-indexerstats-remaining translate="message" module="hackathon_indexerstats">
         <message>remaining</message>
     </hackathon-indexerstats-remaining>
+    <hackathon-indexerstats-finished-in translate="message" module="hackathon_indexerstats">
+        <message>Finished in</message>
+    </hackathon-indexerstats-finished-in>
 </jstranslator>

@@ -8,6 +8,7 @@ IndexerStats.AjaxRequest.prototype = {
         }
         var progressbar = $(link.parentNode.parentNode).select('.hackathon_indexerstats_info')[0];
         progressbar.addClassName('hackathon_indexerstats_progress');
+        progressbar.parentNode.removeClassName('hackathon_indexerstats_finished');
         progressbar.progress = new IndexerStats.Progress(progressbar);
 
         new Ajax.Request(link.href, {
@@ -54,17 +55,31 @@ IndexerStats.Status.prototype = {
     onSuccess : function(transport) {
         this.isUpdating = false;
         for (var i = 0, c = transport.responseJSON.process.length; i < c; ++i) {
-        	var statusColumn = $('hackathon_indexerstats_progress_' + transport.responseJSON.process[i].code);
-        	if (statusColumn) {
-        		//TODO update status, update_required and updated_at as well (with "finished" notice?)
-        		statusColumn.replace(transport.responseJSON.process[i].html);
+    		var processInfo = transport.responseJSON.process[i];
+        	var progressBar = $('hackathon_indexerstats_progress_' + processInfo.code);
+        	if (progressBar) {
+            	var timeColumn = progressBar.parentNode;
+        		var processTableRow = timeColumn.parentNode;
+        		var endedAtColumn = processTableRow.select('td')[6];
+
+        		//TODO update status and update_required as well
+        		if (endedAtColumn.innerHTML.trim() != processInfo.html_ended_at.trim()) {
+        			// process has finished
+            		progressBar.replace(processInfo.html_time);
+            		endedAtColumn.update(processInfo.html_ended_at);
+            		timeColumn.addClassName('hackathon_indexerstats_finished');
+            		timeColumn.select('.hackathon_indexerstats_avgruntime')[0].update(
+            		    Translator.translate('Finished in') + ' ' + processInfo.last_running_time);
+        		} else if (processInfo.status == 'working') {
+        			// process is running
+        			progressBar.replace(processInfo.html_time)
+        	        // copy + paste von unten
+                    $$('.hackathon_indexerstats_progress').each(function (progressbar) {
+                        progressbar.progress = new IndexerStats.Progress(progressbar);
+                    });
+        		}
         	}
         };
-
-        // copy + paste von unten
-            $$('.hackathon_indexerstats_progress').each(function (progressbar) {
-                progressbar.progress = new IndexerStats.Progress(progressbar);
-            });
             
     }
 };
@@ -134,6 +149,7 @@ document.observe("dom:loaded", function() {
             	    .parentNode.parentNode
             	    .select('.hackathon_indexerstats_info')[0];
                 progressbar.addClassName('hackathon_indexerstats_progress');
+                progressbar.parentNode.removeClassName('hackathon_indexerstats_finished');
                 progressbar.progress = new IndexerStats.Progress(progressbar);
         	}
         	parent();

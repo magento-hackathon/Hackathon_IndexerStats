@@ -59,6 +59,21 @@ class Hackathon_IndexerStats_Model_Runtime extends Mage_Core_Model_Abstract
         return trim($differenceString);
     }
 
+    /**
+     * Returns last runtime as string (empty string if currently running)
+     * 
+     * @param Mage_Index_Model_Process $process
+     * @return string
+     */
+    public function getLastRuntimeDisplay(Mage_Index_Model_Process $process)
+    {
+        $startTime = $this->getStartTime($process);
+        $endTime = new DateTime($process->getEndedAt());
+        if ($startTime <= $endTime) {
+            return $this->_getDifferenceAsString($startTime, $endTime);
+        }
+        return '';
+    }
     public function getAvgRuntime(Mage_Index_Model_Process $process)
     {
         $indexerCode = $process->getIndexerCode();

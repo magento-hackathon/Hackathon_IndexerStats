@@ -42,8 +42,13 @@ class Hackathon_IndexerStats_Adminhtml_ProcessController extends Mage_Index_Admi
         foreach ($indexer->getProcessesCollection() as $process) {
             /* @var $process Mage_Index_Model_Process */
             $this->_jsonResponse['process'][] = array(
-                'code' => $process->getIndexerCode(),
-                'html' => $statusRenderer->render($process));
+                'code'              => $process->getIndexerCode(),
+                'status'            => $process->getStatus(),
+                'last_running_time' => Mage::getModel('hackathon_indexerstats/runtime')->getLastRuntimeDisplay($process),
+                'html_ended_at'     => $process->getEndedAt()
+                    ? Mage::helper('core')->formatDate($process->getEndedAt(), Mage_Core_Model_Locale::FORMAT_TYPE_MEDIUM, true)
+                    : Mage::helper('index')->__('Never'),
+                'html_time'         => $statusRenderer->render($process));
         }
         $this->_sendJsonResponse();
     }

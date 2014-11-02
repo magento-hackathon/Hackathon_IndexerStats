@@ -173,3 +173,9 @@
 .hackathon_indexerstats_progress .hackathon_indexerstats_avgruntime {
     display: none;
 }
+.hackathon_indexerstats_finished {
+	font-weight: bold;
+	color: #fff;
+	background-color: rgb(79,198,115);
+	transition: background-color 1s
+}
