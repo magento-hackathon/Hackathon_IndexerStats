@@ -39,16 +39,27 @@ class Hackathon_IndexerStats_Adminhtml_ProcessController extends Mage_Index_Admi
         /* @var $statusRenderer Hackathon_IndexerStats_Block_Adminhtml_Index_Status */
         $statusRenderer = $this->getLayout()->createBlock(
             'hackathon_indexerstats/adminhtml_index_status');
+        /* @var $gridBlock Mage_Index_Block_Adminhtml_Process_Grid */
+        $gridBlock = $this->getLayout()->createBlock('index/adminhtml_process_grid');
         foreach ($indexer->getProcessesCollection() as $process) {
             /* @var $process Mage_Index_Model_Process */
+            $updateRequiredDisplay = $gridBlock->decorateUpdateRequired(
+                $process->getUpdateRequiredOptions()[intval($process->getUnprocessedEventsCollection()->count() > 0)],
+                $process, null, false);
+            $statusDisplay = $gridBlock->decorateStatus(
+                $process->getStatusesOptions()[$process->getStatus()],
+                $process, null, false);
+            $endedAtDisplay = $process->getEndedAt()
+                ? Mage::helper('core')->formatDate($process->getEndedAt(), Mage_Core_Model_Locale::FORMAT_TYPE_MEDIUM, true)
+                : Mage::helper('index')->__('Never');
             $this->_jsonResponse['process'][] = array(
-                'code'              => $process->getIndexerCode(),
-                'status'            => $process->getStatus(),
-                'last_running_time' => Mage::getModel('hackathon_indexerstats/runtime')->getLastRuntimeDisplay($process),
-                'html_ended_at'     => $process->getEndedAt()
-                    ? Mage::helper('core')->formatDate($process->getEndedAt(), Mage_Core_Model_Locale::FORMAT_TYPE_MEDIUM, true)
-                    : Mage::helper('index')->__('Never'),
-                'html_time'         => $statusRenderer->render($process));
+                'code'                 => $process->getIndexerCode(),
+                'status'               => $process->getStatus(),
+                'last_running_time'    => Mage::getModel('hackathon_indexerstats/runtime')->getLastRuntimeDisplay($process),
+                'html_status'          => $statusDisplay,
+                'html_update_required' => $updateRequiredDisplay,
+                'html_ended_at'        => $endedAtDisplay,
+                'html_time'            => $statusRenderer->render($process));
         }
         $this->_sendJsonResponse();
     }

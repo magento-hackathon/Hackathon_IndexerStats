@@ -60,12 +60,15 @@ IndexerStats.Status.prototype = {
         	if (progressBar) {
             	var timeColumn = progressBar.parentNode;
         		var processTableRow = timeColumn.parentNode;
+        		var statusColumn = processTableRow.select('td')[4];
+        		var updateRequiredColumn = processTableRow.select('td')[5];
         		var endedAtColumn = processTableRow.select('td')[6];
 
-        		//TODO update status and update_required as well
         		if (endedAtColumn.innerHTML.trim() != processInfo.html_ended_at.trim()) {
         			// process has finished
             		progressBar.replace(processInfo.html_time);
+            		statusColumn.update(processInfo.html_status);
+            		updateRequiredColumn.update(processInfo.html_update_required);
             		endedAtColumn.update(processInfo.html_ended_at);
             		timeColumn.addClassName('hackathon_indexerstats_finished');
             		timeColumn.select('.hackathon_indexerstats_avgruntime')[0].update(
@@ -73,6 +76,7 @@ IndexerStats.Status.prototype = {
         		} else if (processInfo.status == 'working') {
         			// process is running
         			progressBar.replace(processInfo.html_time)
+            		statusColumn.update(processInfo.html_status);
         	        // copy + paste von unten
                     $$('.hackathon_indexerstats_progress').each(function (progressbar) {
                         progressbar.progress = new IndexerStats.Progress(progressbar);
