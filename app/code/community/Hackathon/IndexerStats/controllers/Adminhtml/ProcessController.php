@@ -41,7 +41,7 @@ class Hackathon_IndexerStats_Adminhtml_ProcessController extends Mage_Index_Admi
             'hackathon_indexerstats/adminhtml_index_status');
         /* @var $gridBlock Mage_Index_Block_Adminhtml_Process_Grid */
         $gridBlock = $this->getLayout()->createBlock('index/adminhtml_process_grid');
-        foreach ($indexer->getProcessesCollection() as $process) {
+        foreach ($indexer->getProcessesCollection()->clear() as $process) {
             /* @var $process Mage_Index_Model_Process */
             $updateRequiredDisplay = $gridBlock->decorateUpdateRequired(
                 $process->getUpdateRequiredOptions()[intval($process->getUnprocessedEventsCollection()->count() > 0)],
@@ -95,8 +95,8 @@ class Hackathon_IndexerStats_Adminhtml_ProcessController extends Mage_Index_Admi
             );
         }
 
-        $this->_sendJsonResponse();
-    }
+        $this->statusAjaxAction();
+     }
     
     /**
      * Mass reindex action, modified for AJAX request
@@ -132,7 +132,7 @@ class Hackathon_IndexerStats_Adminhtml_ProcessController extends Mage_Index_Admi
             }
         }
         
-        $this->_sendJsonResponse();
+        $this->statusAjaxAction();
     }
 
     /**

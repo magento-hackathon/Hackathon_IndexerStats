@@ -19,7 +19,7 @@ IndexerStats.AjaxRequest.prototype = {
     },
     onSuccess : function(transport) {
         this.showMessage(transport.responseJSON.error ? 'error' : 'success', transport.responseJSON.message);
-        IndexerStats.status.update();
+        IndexerStats.status.onSuccess(transport);
     },
     onFailure : function(transport) {
         this.showMessage('error', 'Reindex request failed.');
@@ -75,16 +75,7 @@ IndexerStats.Status.prototype = {
                 var updateRequiredColumn = processTableRow.select('td')[5];
                 var endedAtColumn = processTableRow.select('td')[6];
 
-                if (endedAtColumn.innerHTML.trim() != processInfo.html_ended_at.trim()) {
-                    // process has finished
-                    progressBar.replace(processInfo.html_time);
-                    statusColumn.update(processInfo.html_status);
-                    updateRequiredColumn.update(processInfo.html_update_required);
-                    endedAtColumn.update(processInfo.html_ended_at);
-                    timeColumn.addClassName('hackathon_indexerstats_finished');
-                    timeColumn.select('.hackathon_indexerstats_avgruntime')[0].update(
-                        Translator.translate('Finished in') + ' ' + processInfo.last_running_time);
-                } else if (processInfo.status == 'working') {
+                if (processInfo.status == 'working') {
                     // process is running
                     progressBar.replace(processInfo.html_time)
                     statusColumn.update(processInfo.html_status);
@@ -93,6 +84,15 @@ IndexerStats.Status.prototype = {
                         progressbar.progress = new IndexerStats.Progress(progressbar);
                     });
                     intervalToNextUpdate = Math.min(intervalToNextUpdate, progressbar.progress.estimatedEndTime . progressbar.progress.getCurrentTime());
+                } else if (endedAtColumn.innerHTML.trim() != processInfo.html_ended_at.trim()) {
+                    // process has just finished
+                    progressBar.replace(processInfo.html_time);
+                    statusColumn.update(processInfo.html_status);
+                    updateRequiredColumn.update(processInfo.html_update_required);
+                    endedAtColumn.update(processInfo.html_ended_at);
+                    timeColumn.addClassName('hackathon_indexerstats_finished');
+                    timeColumn.select('.hackathon_indexerstats_avgruntime')[0].update(
+                        Translator.translate('Finished in') + ' ' + processInfo.last_running_time);
                 }
             }
         }
@@ -175,6 +175,9 @@ document.observe("dom:loaded", function() {
                 progressbar.progress = new IndexerStats.Progress(progressbar);
             }
             parent();
+            if (this.select.value == 'reindex') {
+                IndexerStats.status.update();
+            }
         });
     IndexerStats.status = new IndexerStats.Status();
 });
