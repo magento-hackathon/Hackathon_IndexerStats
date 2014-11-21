@@ -41,14 +41,18 @@ IndexerStats.AjaxRequest.prototype = {
 IndexerStats.Status = Class.create();
 IndexerStats.Status.prototype = {
     /*
-     * minimum time between status update requests (in ms)
+     * minimum time between status update requests (in s)
      */
-    MIN_UPDATE_INTERVAL : 10000,
+    MIN_UPDATE_INTERVAL : 10,
     /*
-     * maximum time between status update requests (in ms)
+     * maximum time between status update requests (in s)
      */
-    MAX_UPDATE_INTERVAL : 60000,
-
+    MAX_UPDATE_INTERVAL : 60,
+    /*
+     * time span before estimated end where update request should be fired (in s)
+     */
+    UPDATE_BEFORE_ESTIMATE : 5,
+    
     initialize : function() {
         this.isUpdating = false;
         this.timeoutId = null;
@@ -65,43 +69,50 @@ IndexerStats.Status.prototype = {
     onSuccess : function(transport) {
         this.isUpdating = false;
         var intervalToNextUpdate = this.MAX_UPDATE_INTERVAL;
-        for (var i = 0, c = transport.responseJSON.process.length; i < c; ++i) {
-            var processInfo = transport.responseJSON.process[i];
-            var progressBar = $('hackathon_indexerstats_progress_' + processInfo.code);
-            if (progressBar) {
-                var timeColumn = progressBar.parentNode;
-                var processTableRow = timeColumn.parentNode;
-                var statusColumn = processTableRow.select('td')[4];
-                var updateRequiredColumn = processTableRow.select('td')[5];
-                var endedAtColumn = processTableRow.select('td')[6];
+        try {
+            for (var i = 0, c = transport.responseJSON.process.length; i < c; ++i) {
+                var processInfo = transport.responseJSON.process[i];
+                var progressBar = $('hackathon_indexerstats_progress_' + processInfo.code);
+                if (progressBar) {
+                    var timeColumn = progressBar.parentNode;
+                    var processTableRow = timeColumn.parentNode;
+                    var statusColumn = processTableRow.select('td')[4];
+                    var updateRequiredColumn = processTableRow.select('td')[5];
+                    var endedAtColumn = processTableRow.select('td')[6];
 
-                if (processInfo.status == 'working') {
-                    // process is running
-                    progressBar.replace(processInfo.html_time)
-                    statusColumn.update(processInfo.html_status);
-                    // copy + paste von unten
-                    $$('.hackathon_indexerstats_progress').each(function (progressbar) {
-                        progressbar.progress = new IndexerStats.Progress(progressbar);
-                    });
-                    intervalToNextUpdate = Math.min(intervalToNextUpdate, progressbar.progress.estimatedEndTime . progressbar.progress.getCurrentTime());
-                } else if (endedAtColumn.innerHTML.trim() != processInfo.html_ended_at.trim()) {
-                    // process has just finished
-                    progressBar.replace(processInfo.html_time);
-                    statusColumn.update(processInfo.html_status);
-                    updateRequiredColumn.update(processInfo.html_update_required);
-                    endedAtColumn.update(processInfo.html_ended_at);
-                    timeColumn.addClassName('hackathon_indexerstats_finished');
-                    timeColumn.select('.hackathon_indexerstats_avgruntime')[0].update(
-                        Translator.translate('Finished in') + ' ' + processInfo.last_running_time);
+                    if (processInfo.status == 'working') {
+                        // process is running
+                        statusColumn.update(processInfo.html_status);
+                        progressBar.replace(processInfo.html_time);
+                        progressBar = $('hackathon_indexerstats_progress_' + processInfo.code);
+                        progressBar.progress = new IndexerStats.Progress(progressBar);
+                        intervalToNextUpdate = Math.min(intervalToNextUpdate,
+                            progressBar.progress.estimatedEndTime - progressBar.progress.getCurrentTime() - this.UPDATE_BEFORE_ESTIMATE);
+                    } else if (endedAtColumn.innerHTML.trim() != processInfo.html_ended_at.trim()) {
+                        // process has just finished
+                        progressBar.replace(processInfo.html_time);
+                        statusColumn.update(processInfo.html_status);
+                        updateRequiredColumn.update(processInfo.html_update_required);
+                        endedAtColumn.update(processInfo.html_ended_at);
+                        timeColumn.addClassName('hackathon_indexerstats_finished');
+                        timeColumn.select('.hackathon_indexerstats_avgruntime')[0].update(
+                            Translator.translate('Finished in') + ' ' + processInfo.last_running_time);
+                    } else if (progressBar.progress && progressBar.progress.initializing) {
+                    	// still initializing, check again asap
+                    	intervalToNextUpdate = this.MIN_UPDATE_INTERVAL;
+                    }
                 }
             }
+        } catch (e) {
+        	console.log(e);
         }
         if (this.timeoutId) {
             clearTimeout(this.timeoutId);
         }
         this.timeoutId = setTimeout(
-            Math.max(this.MIN_UPDATE_INTERVAL, 1000 * intervalToNextUpdate),
-            this.update.bind(this));
+    		this.update.bind(this),
+    		1000 * Math.max(this.MIN_UPDATE_INTERVAL, intervalToNextUpdate)
+        );
     },
     onFailure : function(transport) {
         this.isUpdating = false;
@@ -116,11 +127,13 @@ IndexerStats.Progress.prototype = {
         this.timeDisplayElement = progressElement.select('.hackathon_indexerstats_time_display')[0];
         this.timeCaptionElement = progressElement.select('.hackathon_indexerstats_time_caption')[0];
         if (progressElement.dataset.started) {
+        	this.initializing = false;
             this.timeOffset = progressElement.dataset.now - (Date.now() / 1000);
             this.startTime = progressElement.dataset.started;
             this.estimatedEndTime = progressElement.dataset.estimated_end;
             setInterval(this.updateProgressbar.bind(this), 1000);
         } else {
+        	this.initializing = true;
         	this.progressBarElement.style.width = '100%';
             this.timeCaptionElement.update(Translator.translate('Initializing...'));
             this.progressElement.addClassName('hackathon_indexerstats_starting');
