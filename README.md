@@ -28,7 +28,6 @@ Open Issues
 ----
 
 1. The extension is not compatible with Magento Enterprise yet
-2. To see if the indexer process actually has finished in time, you have to refresh the page
 
 
 Use with Custom Indexers
