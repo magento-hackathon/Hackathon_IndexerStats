@@ -12,6 +12,8 @@ Compatibility
 - Magento CE 1.8
 - Magento CE 1.7
 
+*requires PHP 5.4 or higher*
+
 Installation
 ----
 
