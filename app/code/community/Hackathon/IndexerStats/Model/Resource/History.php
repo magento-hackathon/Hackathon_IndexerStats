@@ -47,7 +47,6 @@ class Hackathon_IndexerStats_Model_Resource_History extends Mage_Core_Model_Reso
             array("dataset" => new Zend_Db_Expr("($selectLastEntries)")),
             array('avg_running_time' => 'AVG(dataset.running_time)'));
 
-        Mage::log($selectAverage->__toString());
         $bind = array(
             'process_id' => $processId,
         );
