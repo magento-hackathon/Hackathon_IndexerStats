@@ -2,7 +2,7 @@
     "name": "magento-hackathon/indexer-stats",
     "type": "magento-module",
     "description": "Adds a column to the indexer list with information about running time for full reindex of the respective indexers.",
-    "homepage": "https://github.com/magento-hackathon/IndexerStats",
+    "homepage": "https://github.com/magento-hackathon/Hackathon_IndexerStats",
     "require": {
         "php": ">=5.4",
         "magento-hackathon/magento-composer-installer": "*"
