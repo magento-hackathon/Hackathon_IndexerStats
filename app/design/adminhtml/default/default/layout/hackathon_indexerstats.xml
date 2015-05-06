@@ -20,5 +20,8 @@
                 <name>hackathon_indexerstats/index_progress.js</name>
             </action>
         </reference>
+        <reference name="content">
+            <block type="adminhtml/template" name="process.edit.js" template="hackathon/indexerstats/process/js.phtml" after="process"/>
+        </reference>
     </adminhtml_process_list>
 </layout>
