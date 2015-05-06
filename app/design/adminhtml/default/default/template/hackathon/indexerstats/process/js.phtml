@@ -21,6 +21,6 @@ document.observe("dom:loaded", function() {
                 IndexerStats.status.update();
             }
         });
-    IndexerStats.status = new IndexerStats.Status('<?php echo $this->getUrl('process/statusAjax') ?>');
+    IndexerStats.status = new IndexerStats.Status('<?php echo $this->getUrl('adminhtml/process/statusAjax') ?>');
 });
 </script>
