@@ -60,7 +60,7 @@ IndexerStats.Status.prototype = {
     update : function() {
         if (this.isUpdating) return;
         this.isUpdating = true;
-        new Ajax.Request('/admin/process/statusAjax', {
+        new Ajax.Request(window.location.href.replace('/process/list','/process/statusAjax'), {
             loaderArea : false,
             onSuccess : this.onSuccess.bind(this),
             onFailure : this.onFailure.bind(this)
